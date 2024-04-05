@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/google"
       version = "5.23.0"
     }
+    dbtcloud = {
+      source  = "dbt-labs/dbtcloud"
+      version = "0.2.20"
+    }
   }
 }
 
@@ -15,16 +19,6 @@ provider "google" {
   credentials = file(var.credentials)
 }
 
-
-#Configure dbt cloud
-terraform {
-  required_providers {
-    dbtcloud = {
-      source  = "dbt-labs/dbtcloud"
-      version = "0.2.20"
-    }
-  }
-}
 
 provider "dbtcloud" {
   account_id = var.dbt_account_id
