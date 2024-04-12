@@ -2,16 +2,18 @@
 #gcp as provider
 terraform {
   required_providers {
+    dbtcloud = {
+      source  = "dbt-labs/dbtcloud"
+      version = "0.2.23"
+    }
     google = {
       source  = "hashicorp/google"
       version = "5.23.0"
     }
-    dbtcloud = {
-      source  = "dbt-labs/dbtcloud"
-      version = "0.2.20"
-    }
   }
 }
+
+
 
 provider "google" {
   project     = var.project
@@ -21,7 +23,7 @@ provider "google" {
 
 
 provider "dbtcloud" {
-  account_id = var.dbt_account_id
-  token      = var.dbt_token
+  account_id = var.account_id
+  token      = var.DBT_CLOUD_TOKEN
   host_url   = var.dbt_host_url
 }

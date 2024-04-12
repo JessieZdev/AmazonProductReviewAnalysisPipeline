@@ -7,6 +7,16 @@ variable "region" {
   description = "My Region in gcp"
   default     = "us-central1"
 }
+variable "client_email" {
+  description = "My Region in gcp"
+  default     = "terra-main-sa@amazonproductreview-419123.iam.gserviceaccount.com"
+}
+
+#need to update when we create a new service account 
+# variable "credentials" {F
+#   description = "Where to store SA Credentials"
+#   default     = "./keys/credentials_s_gcp_terraform_sa.json"
+# }
 
 variable "credentials" {
   description = "My Credentials in gcp"
@@ -28,18 +38,22 @@ variable "bq_dataset_name" {
   default     = "amzreview_dataset"
 }
 
+variable "bq_dataset_description" {
+  description = "Big Query Dataset description"
+  default     =  "This dataset is for amazon product review"
+}
 
 variable "gcs_storage_class" {
   description = "Google Cloud Storage Bucket Storage Class"
   default     = "STANDARD"
 }
 
-variable "dbt_account_id" {
+variable "account_id" {
   description = "DBT account id"
   type = number
 }
 
-variable "dbt_token" {
+variable "DBT_CLOUD_TOKEN" {
   description = "DBT API(Service) Token"
   type = string
 }
@@ -47,5 +61,17 @@ variable "dbt_token" {
 variable "dbt_host_url" {
   description = "DBT Host URL"
   type = string
-  default = "https://cloud.getdbt.com/api"
+  # default = "https://cloud.getdbt.com/api"
+}
+
+variable "dataproc_cluster_name" {
+  description = "Dataproc Cluster Name"
+  default     = "sparkcluster" 
+}
+
+
+variable "dbt_cloud_project_id" {
+  description = "DBT project id "
+  type = number
+  default = 70403103919037
 }

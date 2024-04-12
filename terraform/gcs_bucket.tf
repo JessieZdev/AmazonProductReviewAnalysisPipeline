@@ -26,10 +26,3 @@ resource "google_storage_bucket" "data-lake-bucket" {
     }
   }
 }
-
-#generate a big query dataset 
-resource "google_bigquery_dataset" "amzreview_dataset" {
-  dataset_id                  = var.bq_dataset_name
-  description                 = "This dataset is for amazon product review"
-  location                    = var.location
-}
