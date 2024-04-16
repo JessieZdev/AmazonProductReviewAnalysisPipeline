@@ -53,6 +53,7 @@ df_review_product = df_review\
 
 df_review_product.write.format('bigquery') \
     .option('table', output)\
+    .mode('overwrite') \
     .save()
 
     

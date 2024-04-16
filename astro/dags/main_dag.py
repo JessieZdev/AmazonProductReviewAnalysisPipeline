@@ -11,7 +11,8 @@ from airflow.providers.google.cloud.operators.dataproc import  DataprocDeleteClu
 from airflow.contrib.operators.gcs_delete_operator import GoogleCloudStorageDeleteOperator
 from airflow.utils.trigger_rule import TriggerRule
 from airflow.operators.bash_operator import BashOperator
-
+from airflow.providers.dbt.cloud.hooks.dbt import DbtCloudHook, DbtCloudJobRunStatus
+from airflow.providers.dbt.cloud.operators.dbt import DbtCloudRunJobOperator
 
 import os 
 
@@ -27,10 +28,10 @@ path_to_local_home = airflow_home + "/include/data"
 
 # for smaller test we can also use All_Beauty which is much smaller than Beauty_and_Personal_Care
 # review_dataset_file = "Beauty_and_Personal_Care.jsonl.gz"
-cat_list = ["All_Beauty", "Beauty_and_Personal_Care"]
+cat_list = ["All_Beauty", "Beauty_and_Personal_Care","Video_Games"]
 
 
-cat = cat_list[0]
+cat = cat_list[1]
 review_dataset_file = cat + ".jsonl.gz"
 meta_dataset_file = f"meta_{cat}.jsonl.gz"
 
@@ -247,9 +248,9 @@ def pipeline_workflow():
     
     gcs_spark_task = upload_directory_to_gcs(path_to_local_spark)
     spark_init_task = submit_init_pyspark_task(target_file=spark_init_process_file, input_review_path=review_bucket_path, input_meta_path=meta_bucket_path)
-    spark_join_task = submit_joins_pyspark_task(target_file=spark_joins_tables_to_bq_file, input_path=gcs_spark_process_path, tablename=cat + "review_product_table")
+    spark_join_task = submit_joins_pyspark_task(target_file=spark_joins_tables_to_bq_file, input_path=gcs_spark_process_path, tablename=cat + "_review_product_table")
     delete_parquet_task = delete_trans_parquet_folder(bucket_name = Variable.get("gcs_bucket_name"), prefix= 'parquet/')   
-    delete_cluster_task = delete_dataproc_cluster(project_id = Variable.get("project_id"), cluster_name = Variable.get("cluster_name"), region = Variable.get("region"))
+    # delete_cluster_task = delete_dataproc_cluster(project_id = Variable.get("project_id"), cluster_name = Variable.get("cluster_name"), region = Variable.get("region"))
     
 
     store_task >> [download_review_task, download_meta_task]

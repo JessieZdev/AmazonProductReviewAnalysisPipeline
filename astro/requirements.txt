@@ -1,4 +1,4 @@
 # Astro Runtime includes the following pre-installed providers packages: https://docs.astronomer.io/astro/runtime-image-architecture#provider-packages
 apache-airflow-providers-google
 apache-airflow-providers-dbt-cloud
-json2parquet==2.2.0
+# json2parquet==2.2.0

@@ -1,41 +1,28 @@
-# from airflow.providers.google.cloud.hooks.gcs import GCSHook
 from airflow.providers.google.cloud.transfers.local_to_gcs import LocalFilesystemToGCSOperator
-import subprocess
+from airflow.providers.google.cloud.hooks.gcs import GCSHook
 
-import os 
-# @task
-# def get_bucket_name():
-#     completed_process = subprocess.run(
-#         ["terraform", "output", "-raw", "gcs_bucket_name"],
-#         check=True,
-#         capture_output=True,
-#         text=True, 
-#         cwd="/usr/local/terraform",
-#     )
-#     bucket_name = completed_process.stdout.strip()
-#     return bucket_name
 
-import os
-
+# LocalFilesystemToGCSOperator can't pass blob size, hard to upload large file
 def upload_to_gcs( bucket, object_name, local_file, filename ):
     upload_file = LocalFilesystemToGCSOperator(
         task_id=f"upload_file_{filename}",
-        src=os.path.expandvars(local_file),
+        src=local_file,
         dst=object_name,
         bucket=bucket,
     )
-    # bucket_name: The bucket to upload to.
-    # object name to set when uploading the file.
-    # filename: The local file path to the file to be uploaded.
     
-    # gcs_hook = GCSHook(gcp_conn_id="google_cloud_default")
-    # expanded_local_file = os.path.expandvars(local_file)
-    # gcs_hook = GCSHook(gcp_conn_id="google_cloud_default")
-    
-    # gcs_hook.upload(bucket_name=bucket, object_name=object_name, filename=expanded_local_file, num_max_attempts = 3)
-    # print(f"File {local_file} uploaded to {bucket}/raw/{object_name}")
-    # return f"{bucket}/{object_name}"
-    
-    
-    
-
+def upload_to_gcs_hook( bucket, object_name, local_file, filename ):
+    hook = GCSHook(
+            gcp_conn_id="google_cloud_default",
+        )
+    try:
+        hook.upload(
+            bucket_name=bucket,
+            object_name=object_name,
+            mime_type="application/octet-stream",
+            filename=local_file,
+            chunk_size= 5 * 1024 * 1024 ,
+        )        
+        print(f"Uploaded {filename} to {bucket}/{object_name}")
+    except Exception as e:
+        print(f"Failed to upload {filename} to {bucket}/{object_name}: {str(e)}")

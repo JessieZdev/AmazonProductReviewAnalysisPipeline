@@ -5,7 +5,7 @@
 
 resource "dbtcloud_project" "my_project" {
   name = "Analytics"
-  dbt_project_subdirectory = "/path"
+  dbt_project_subdirectory = "/dbt_cloud"
 }
 
 
