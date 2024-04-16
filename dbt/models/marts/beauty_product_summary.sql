@@ -8,5 +8,5 @@ select
     COUNTIF(verified_purchase) as count_verified_purchases,
     COUNTIF(sentiment = 'Positive') as positive_reviews,
     COUNTIF(sentiment = 'Negative') as negative_reviews
-from {{ ref('stg_beauty_reviews') }}
+from {{ ref('stg_allBeauty_reviewsProducts') }}
 group by asin
