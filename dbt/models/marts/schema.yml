@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: beauty_product_summary
+    description: "This table summarizes key metrics about beauty products reviewed."
+    columns:
+      - name: parent_asin
+        description: "The Amazon Standard Identification Number for the product."
+        tests:
+          - unique
+          - not_null
+
+      - name: average_rating
+        description: "The average rating for each product, calculated across all reviews."
+        tests:
+          - not_null
+
+      - name: total_reviews
+        description: "The total number of reviews for each product."
+        tests:
+          - not_null
