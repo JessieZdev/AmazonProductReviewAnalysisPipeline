@@ -1,0 +1,8 @@
+version: 2 
+
+sources:
+  - name: staging
+    database: amazonproductreview-419123
+    schema: amzreview_dataset
+    tables:
+      - name: All_Beautyreview_product_table
